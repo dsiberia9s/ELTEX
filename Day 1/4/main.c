@@ -23,7 +23,7 @@ void helix(int s) {
     for (int j = 0; j < J; j++) {
       for (int t = 0; t < i; t++) {
         // printf("i=%d d=%d n=%d\n", i, d, n);
-        if (d == 0) { 
+        if (d == 0) {
           x = x + 1;
         } else if (d == 1) {
           x = x + s;
@@ -49,6 +49,7 @@ void helix(int s) {
       printf("\n");
     }
   }
+  free(m);
 }
 
 int main (void)
