@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef __APPLE__
+#include <stdlib.h>
+#else
+#include <malloc.h>
+#endif
+
 #define FILED_SIZE 64
 #define PB_SIZE 256
 
@@ -90,6 +96,10 @@ void phonebook(unsigned char action) {
     } else if (action == 2) {
       while (1) {
         char * input = (char *)malloc(sizeof(char) * field);
+        if (input == NULL) {
+          perror("Mem err. Source line: 93.");
+          exit(EXIT_FAILURE);
+        }
         system("clear");
         printf("📕 PHONE BOOK. Search ID of contact.\n");
         printf("Help: type * and press Enter for exit.\n");
@@ -119,6 +129,10 @@ void phonebook(unsigned char action) {
       }
     } else if (action == 3) {
       char * input = (char *)malloc(sizeof(char) * field);
+      if (input == NULL) {
+        perror("Mem err. Source line: 131.");
+        exit(EXIT_FAILURE);
+      }
       int id;
       int opt;
       system("clear");
@@ -271,6 +285,5 @@ void phonebook(unsigned char action) {
 
 int main (void) {
   phonebook(0);
-
   return 0;
 }

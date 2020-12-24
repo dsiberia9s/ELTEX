@@ -1,14 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void helix(int s) {
+#define s 5
+
+int m[s];
+
+void helix() {
   /*
     int s = 5;
     5 4 4 3 3 2 2 1 1
     → ↓ ← ↑ → ↓ ← ↑ →
   */
   int S = s * s;
-  int * m = (int*)malloc(sizeof(int) * S);
   int x = 0;
   int n = 1;
   int d = 0;
@@ -22,7 +25,6 @@ void helix(int s) {
     }
     for (int j = 0; j < J; j++) {
       for (int t = 0; t < i; t++) {
-        // printf("i=%d d=%d n=%d\n", i, d, n);
         if (d == 0) {
           x = x + 1;
         } else if (d == 1) {
@@ -49,11 +51,10 @@ void helix(int s) {
       printf("\n");
     }
   }
-  free(m);
 }
 
 int main (void)
 {
-  helix(5);
+  helix();
   return 0;
 }

@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void matrix(int s) {
+#define s 3
+
+int m[s];
+
+void matrix() {
   int S = s * s;
-  int * m = (int*)malloc(sizeof(int) * S);
   for (int i = 0; i < S; i++) {
     m[i] = i + 1;
   }
@@ -18,6 +21,6 @@ void matrix(int s) {
 
 int main (void)
 {
-  matrix(3);
+  matrix();
   return 0;
 }

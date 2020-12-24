@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void back(int s) {
-  int * m = (int*)malloc(sizeof(int) * s);
+#define s 6
+
+int m[s];
+
+void back() {
   for (int i = 0; i < s; i++) {
     m[i] = i + 1;
   }
@@ -13,7 +16,7 @@ void back(int s) {
   }
 
   printf("\n");
-  
+
   printf("Output-> ");
   for (int i = s - 1; i > -1; i--) {
     printf("%d ", m[i]);
@@ -22,6 +25,6 @@ void back(int s) {
 
 int main (void)
 {
-  back(5);
+  back();
   return 0;
 }
