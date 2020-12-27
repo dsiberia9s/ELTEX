@@ -123,6 +123,48 @@ void phonebook(unsigned char action) {
       Pause();
       free(query);
       return;
+    } else if (action == 3) {
+      if (!phonebook_data_size) {
+        return;
+      }
+      char id_[10];
+      size_t id;
+      char key;
+      char * field = (char *)malloc(sizeof(char) * FILED_SIZE);
+      if (phonebook_data == NULL) {
+        perror("Allocating error.");
+        exit(EXIT_FAILURE);
+      }
+      system("clear");
+      printf("[J] PHONE BOOK. Contact edit.\n");
+      printf("Type # of contact for edit and press Enter: ");
+      fgets(id_, 10, stdin);
+      sscanf(id_, "%ld", &id);
+      if (id >= phonebook_data_size) {
+        printf("Edit operation canceled. Incorrect #.\n");
+        Pause();
+        free(field);
+        return;
+      }
+      printf("Type key of filed <1> NAME, <2> SURNAME, <3> PHONE and press Enter: ");
+      key = Getchar();
+      printf("Type NEW VALUE and press Enter: ");
+      fgets(field, FILED_SIZE, stdin);
+      sscanf(field, "%s", field);
+      switch (key) {
+        case '1':
+          strcpy((phonebook_data + id)->name, field);
+          break;
+        case '2':
+          strcpy((phonebook_data + id)->surname, field);
+          break;
+        case '3':
+          strcpy((phonebook_data + id)->phone, field);
+          break;
+      }
+      Pause();
+      free(field);
+      return;
     } else if (action == 4) {
       char id_[10];
       size_t id;
