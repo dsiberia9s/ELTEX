@@ -1,25 +1,25 @@
 #include <stdio.h>
 
-void watch() {
-  struct main
-  {
-    char a; // 1 byte
-    int b; // 4 bytes
-  };
-  
-  struct main strct;
-  struct main * ptr_strct;
-  ptr_strct = &strct;
-  ptr_strct->a = 'C';
-  ptr_strct->b = 3;
+struct oct
+{
+  char a; // 1 byte + 3 bytes for padding = 4 bytes
+  int b; // 4 bytes
+};
 
-  char str[50] = {'A', 0, 0, 0, 0, 'B', 0, 0, 0, 0};
-  printf("%d", );
-  /*
-  for (int i = 0; i < 50; i++) {
-    printf("%d ", str[i]);
+void watch() {
+  char a[8] = {'A', 0, 0, 0, 0b1111000, 0b11, 0, 0};
+  char * ap = a;
+  for (int i = 0; i < 8; i++) {
+    printf("%02x ", a[i]);
   }
-  */
+  printf("\n");
+
+  struct oct s;
+  struct oct * sp = &s;
+
+  sp = (struct oct *)ap;
+
+  printf("a = %c; b = %d\n", sp->a, sp->b);
 }
 
 int main (void)
