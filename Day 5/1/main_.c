@@ -19,7 +19,7 @@ struct contact * phonebook_data = NULL;
 size_t phonebook_data_size = 0;
 
 void Pause() {
-  printf("Press Enter for continue.");
+  printf("\nPress Enter for continue.");
   getchar();
 }
 
@@ -36,7 +36,7 @@ void Add() {
     phonebook_data = (struct contact *)realloc(phonebook_data, sizeof(struct contact) * (phonebook_data_size + 1));
   }
   if (phonebook_data == NULL) {
-    perror("Allocate error.");
+    perror("Allocating error");
     exit(EXIT_FAILURE);
   }
   phonebook_data_size++;
@@ -67,7 +67,7 @@ int Remove(size_t id) {
   }
   phonebook_data = realloc(phonebook_data, sizeof(struct contact) * (phonebook_data_size - 1));
   if (phonebook_data == NULL) {
-    perror("Allocate error.");
+    perror("Allocating error");
     exit(EXIT_FAILURE);
   }
   phonebook_data_size--;
@@ -96,6 +96,32 @@ void phonebook(unsigned char action) {
       sscanf((phonebook_data + phonebook_data_size - 1)->phone, "%s", (phonebook_data + phonebook_data_size - 1)->phone);
       printf("Contact succefull added: %s. %s. %s.\n", (phonebook_data + phonebook_data_size - 1)->name, (phonebook_data + phonebook_data_size - 1)->surname, (phonebook_data + phonebook_data_size - 1)->phone);
       Pause();
+      return;
+    } else if (action == 2) {
+      if (!phonebook_data_size) {
+        return;
+      }
+      char * query = (char *)malloc(sizeof(char) * FILED_SIZE);
+      if (phonebook_data == NULL) {
+        perror("Allocating error.");
+        exit(EXIT_FAILURE);
+      }
+      system("clear");
+      printf("[J] PHONE BOOK. Search # of contact.\n");
+      printf("Type SEARCH QUERY and press Enter: ");
+      fgets(query, FILED_SIZE, stdin);
+      sscanf(query, "%s", query);
+      for (int i = 0; i < phonebook_data_size; i++) {
+        if (!strcmp(query, (phonebook_data + i)->name) || !strcmp(query, (phonebook_data + i)->surname) || !strcmp(query, (phonebook_data + i)->phone)) {
+          printf("Contact found at #%d %s %s. Phone: %s.\n", i, (phonebook_data + i)->name, (phonebook_data + i)->surname, (phonebook_data + i)->phone);
+          Pause();
+          free(query);
+          return;
+        }
+      }
+      printf("Not found by query: %s\n", query);
+      Pause();
+      free(query);
       return;
     } else if (action == 4) {
       char id_[10];
@@ -130,7 +156,6 @@ void phonebook(unsigned char action) {
       for (size_t i = 0; i < phonebook_data_size; i++) {
         printf("%zu\t%s\t%s\t%s\n", i, (phonebook_data + i)->name, (phonebook_data + i)->surname, (phonebook_data + i)->phone);
       }
-      printf("\n");
       Pause();
       return;
     } else if (action == 6) {
@@ -155,38 +180,40 @@ void phonebook(unsigned char action) {
       printf("4 - Remove.\n");
       printf("5 - Watch all.\n");
       printf("6 - Demo (autofill).\n");
-      printf("0 - Quit.\n");
+      printf("Q - Quit.\n");
       printf("Please, type menu key and press Enter: ");
       key = Getchar();
       switch (key) {
         case '1':
           phonebook(1);
-          key = -1;
+          key = 0;
           break;
         case '2':
           phonebook(2);
-          key = -1;
+          key = 0;
           break;
         case '3':
           phonebook(3);
-          key = -1;
+          key = 0;
           break;
         case '4':
           phonebook(4);
-          key = -1;
+          key = 0;
           break;
         case '5':
           phonebook(5);
-          key = -1;
+          key = 0;
           break;
         case '6':
           phonebook(6);
-          key = -1;
+          key = 0;
           break;
-        case '0':
+        case 'q':
+          return;
+        case 'Q':
           return;
       }
-      if (key == -1) {
+      if (key == 0) {
         break;
       }
     }
