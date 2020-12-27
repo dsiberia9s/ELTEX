@@ -59,13 +59,12 @@ int Remove(size_t id) {
       return 1;
     }
   } else if (id < (phonebook_data_size - 1)) {
-    for (size_t i = 0; i < phonebook_data_size; i++) {
-      strcpy((phonebook_data + id - 1)->name, (phonebook_data + id + 1)->name);
-      strcpy((phonebook_data + id - 1)->surname, (phonebook_data + id + 1)->surname);
-      strcpy((phonebook_data + id - 1)->phone, (phonebook_data + id + 1)->phone);
+    for ( ; id < phonebook_data_size; id++) {
+      strcpy((phonebook_data + id)->name, (phonebook_data + id + 1)->name);
+      strcpy((phonebook_data + id)->surname, (phonebook_data + id + 1)->surname);
+      strcpy((phonebook_data + id)->phone, (phonebook_data + id + 1)->phone);
     }
   }
-  struct contact * phonebook_data_tmp = NULL;
   phonebook_data = realloc(phonebook_data, sizeof(struct contact) * (phonebook_data_size - 1));
   if (phonebook_data == NULL) {
     perror("Allocate error.");
@@ -134,6 +133,17 @@ void phonebook(unsigned char action) {
       printf("\n");
       Pause();
       return;
+    } else if (action == 6) {
+      char names[5][FILED_SIZE] = {"Olivia", "Hana", "Kevin", "Nicole", "Dave"};
+      char surnames[5][FILED_SIZE] = {"Johnson", "Kim", "Jones", "Taylor", "Wilson"};
+      char phones[5][FILED_SIZE] = {"+1-(205)-(111)-(1111)", "+1-(907)-(222)-(2222)", "+1-(479)-(333)-(333)", "+1-(303)-(444)-(4444)", "+1-(239)-(555)-(5555)"};
+      for (int i = 0; i < 5; i++) {
+        Add();
+        strcpy((phonebook_data + phonebook_data_size - 1)->name, names[i]);
+        strcpy((phonebook_data + phonebook_data_size - 1)->surname, surnames[i]);
+        strcpy((phonebook_data + phonebook_data_size - 1)->phone, phones[i]);
+      }
+      return;
     }
 
     while (1) {
@@ -144,6 +154,7 @@ void phonebook(unsigned char action) {
       printf("3 - Edit;\n");
       printf("4 - Remove.\n");
       printf("5 - Watch all.\n");
+      printf("6 - Demo (autofill).\n");
       printf("0 - Quit.\n");
       printf("Please, type menu key and press Enter: ");
       key = Getchar();
@@ -166,6 +177,10 @@ void phonebook(unsigned char action) {
           break;
         case '5':
           phonebook(5);
+          key = -1;
+          break;
+        case '6':
+          phonebook(6);
           key = -1;
           break;
         case '0':
