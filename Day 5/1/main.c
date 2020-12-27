@@ -20,31 +20,26 @@ struct contact
 
 struct contact * phonebook_data = NULL;
 
+char pause() {
+  printf("Press Enter for continue.");
+  return getchar();
+}
+
 int main (void) {
-  phonebook_data = (struct contact *)malloc(sizeof(struct contact));
-  phonebook_data->name[0] = 'a';
-  printf("%c\n", (phonebook_data + 0)->name[0]);
-
-  phonebook_data = (struct contact *)realloc(phonebook_data, sizeof(struct contact) * 2);
-  (phonebook_data + 1)->name[0] = 'b';
-  printf("%c %c\n", (phonebook_data + 0)->name[0], (phonebook_data + 1)->name[0]);
-
+  char name[32];
+  fgets(name, 32, stdin);
+  //pause();
+  //sscanf((const char *)stdin, "%s", name);
+  printf("%s\n", name);
   return 0;
 }
 
 /*
-struct contact * p = (struct contact *)malloc(sizeof(struct contact) * 3);
-p->name[0] = 'a';
-p++;
-p->name[0] = 'b';
-p++;
-p->name[0] = 'c';
-p -= 2;
-for (int i = 0; i < 3; i++) {
-  printf("%c\n", (p + i)->name[0]);
-}
+phonebook_data = (struct contact *)malloc(sizeof(struct contact));
+phonebook_data->name[0] = 'a';
+printf("%c\n", (phonebook_data + 0)->name[0]);
 
-(p + 1)->name[0] = (p + 2)->name[0];
-p = realloc(p, sizeof(struct contact) * 2);
-printf("%c\n", (p + 1)->name[0]);
+phonebook_data = (struct contact *)realloc(phonebook_data, sizeof(struct contact) * 2);
+(phonebook_data + 1)->name[0] = 'b';
+printf("%c %c\n", (phonebook_data + 0)->name[0], (phonebook_data + 1)->name[0]);
 */
