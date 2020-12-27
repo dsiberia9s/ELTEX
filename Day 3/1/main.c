@@ -7,7 +7,8 @@ struct oct
 };
 
 void watch() {
-  char a[8] = {'A', 0, 0, 0, 0b1111000, 0b11, 0, 0};
+  // char a[8] = {'A', 0, 0, 0, 0b1111000, 0b11, 0, 0};
+  char a[8] = {'A', 0, 0, 0, 'B', 0, 0, 0};
   char * ap = a;
   for (int i = 0; i < 8; i++) {
     printf("%02x ", a[i]);
