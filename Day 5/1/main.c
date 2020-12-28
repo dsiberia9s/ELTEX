@@ -204,7 +204,7 @@ void phonebook(unsigned char action) {
       char names[5][FILED_SIZE] = {"Olivia", "Hana", "Kevin", "Nicole", "Dave"};
       char surnames[5][FILED_SIZE] = {"Johnson", "Kim", "Jones", "Taylor", "Wilson"};
       char phones[5][FILED_SIZE] = {"+1-(205)-(111)-(1111)", "+1-(907)-(222)-(2222)", "+1-(479)-(333)-(333)", "+1-(303)-(444)-(4444)", "+1-(239)-(555)-(5555)"};
-      for (int i = 0; i < 5; i++) {
+      for (size_t i = 0; i < 5; i++) {
         Add();
         strcpy((phonebook_data + phonebook_data_size - 1)->name, names[i]);
         strcpy((phonebook_data + phonebook_data_size - 1)->surname, surnames[i]);

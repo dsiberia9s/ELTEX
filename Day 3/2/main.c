@@ -10,24 +10,34 @@ struct contact
   char name[FILED_SIZE];
   char surname[FILED_SIZE];
   char phone[FILED_SIZE];
-  unsigned char property; // & 0b00010000 init, & 0b00010001 used, & 0b00010000 empty
+  char property; // & 0b00010000 init, & 0b00010001 used, & 0b00010000 empty
 };
 
 struct contact phonebook_data[PB_SIZE];
 
+void Pause() {
+  printf("\nPress Enter for continue.");
+  getchar();
+}
+
+char Getchar() {
+  char c = getchar();
+  getchar();
+  return c;
+}
+
 void phonebook(unsigned char action) {
-  int field = FILED_SIZE;
-  int size = PB_SIZE;
-  int space;
-  unsigned char init;
-  char trash;
+  size_t field = FILED_SIZE;
+  size_t phonebook_data_size = PB_SIZE;
+  size_t space;
+  char init;
   int key;
 
   while (1) {
-    space = size;
+    space = phonebook_data_size;
     init = 1;
 
-    for (int i = 0; i < size; i++) {
+    for (size_t i = 0; i < phonebook_data_size; i++) {
       if (!(phonebook_data[i].property & 0b00010000)) {
         init = 0;
         break;
@@ -39,7 +49,7 @@ void phonebook(unsigned char action) {
     }
 
     if (!init) {
-      for (int i = 0; i < size; i++) {
+      for (size_t i = 0; i < phonebook_data_size; i++) {
         phonebook_data[i].property = 0b00010000;
       }
       init = 1;
@@ -48,221 +58,183 @@ void phonebook(unsigned char action) {
     if (action == 1) {
       system("clear");
       if (!space) {
-        printf("⚠️ Not enough free space in phonebook_data array.\n");
+        printf("/!\\ Not enough free space in phonebook_data array.\n");
         printf("Please, remove one contact. Type any key.\n");
-        scanf("%c", &trash);
-        fseek(stdin, 0, SEEK_END);
+        Pause();
         return;
       }
-      int i = 0;
-      for (; i != size; i++) {
+      size_t i = 0;
+      for (; i != phonebook_data_size; i++) {
         if (!(phonebook_data[i].property & 0b00000001)) {
           break;
         }
       }
-      printf("📕 PHONE BOOK. Add new contact.\n");
+      printf("|J| PHONE BOOK. Add new contact.\n");
       printf("Help: type * and press Enter for exit.\n");
-      printf("Assidned ID #%d.\n", i);
+      printf("Assidned ID #%zu.\n", i);
       printf("Type NAME and press Enter: ");
-      scanf("%s", phonebook_data[i].name);
-      fseek(stdin, 0, SEEK_END);
-      if (phonebook_data[i].name[0] == '*') {
-        return;
-      }
+      fgets(phonebook_data[i].name, FILED_SIZE, stdin);
+      sscanf(phonebook_data[i].name, "%s", phonebook_data[i].name);
       printf("Type SURNAME and press Enter: ");
-      scanf("%s", phonebook_data[i].surname);
-      fseek(stdin, 0, SEEK_END);
-      if (phonebook_data[i].surname[0] == '*') {
-        return;
-      }
+      fgets(phonebook_data[i].surname, FILED_SIZE, stdin);
+      sscanf(phonebook_data[i].surname, "%s", phonebook_data[i].surname);
       printf("Type PHONE and press Enter: ");
-      scanf("%s", phonebook_data[i].phone);
-      fseek(stdin, 0, SEEK_END);
-      if (phonebook_data[i].phone[0] == '*') {
-        return;
-      }
+      fgets(phonebook_data[i].phone, FILED_SIZE, stdin);
+      sscanf(phonebook_data[i].phone, "%s", phonebook_data[i].phone);
       phonebook_data[i].property |= 0b00000001;
       printf("Contact succefull added: %s. %s. %s.\n", phonebook_data[i].name, phonebook_data[i].surname, phonebook_data[i].phone);
-      printf("Press Enter for back to menu.");
-      scanf("%c", &trash);
-      fseek(stdin, 0, SEEK_END);
+      Pause();
       return;
     } else if (action == 2) {
-      while (1) {
-        char input[FILED_SIZE];
-        system("clear");
-        printf("📕 PHONE BOOK. Search ID of contact.\n");
-        printf("Help: type * and press Enter for exit.\n");
-        printf("Type Search query and press Enter: ");
-        scanf("%s", input);
-        fseek(stdin, 0, SEEK_END);
-        if (input[0] == '*') {
-          free(input);
-          return;
-        }
-        for (int i = 0; i < size; i++) {
-          if (phonebook_data[i].property & 0b00000001) {
-            if (!strcmp(input, phonebook_data[i].name) || !strcmp(input, phonebook_data[i].surname) || !strcmp(input, phonebook_data[i].phone)) {
-              printf("Found #%d: %s. %s. %s.\n", i, phonebook_data[i].name, phonebook_data[i].surname, phonebook_data[i].phone);
-              printf("Press Enter for back to menu.");
-              scanf("%c", &trash);
-              fseek(stdin, 0, SEEK_END);
-              free(input);
-              return;
-            }
-          }
-        }
-        printf("Not Found.\n");
-        printf("Press Enter to continue.");
-        scanf("%c", &trash);
-        fseek(stdin, 0, SEEK_END);
+      if (phonebook_data_size == space) {
+        return;
       }
-    } else if (action == 3) {
-      char input[FILED_SIZE];
-      int id;
-      int opt;
+      char query[FILED_SIZE];
       system("clear");
-      printf("📕 PHONE BOOK. Edit the contact.\n");
-      printf("Type ID of contact for edit and press Enter: ");
-      scanf("%d", &id);
-      fseek(stdin, 0, SEEK_END);
-      if ((-1 < id) && (id < size) && ((phonebook_data[id].property & 0b00000001))) {
-        printf("Which filed do you wanna chage?\n");
-        printf("1 - name;\n");
-        printf("2 - surname;\n");
-        printf("3 - phone.\n");
-        printf("Type field number and press Enter: ");
-        scanf("%d", &opt);
-        fseek(stdin, 0, SEEK_END);
-        if (opt == 1) {
-          printf("Type new value instead <%s>: ", phonebook_data[id].name);
-          scanf("%s", input);
-          fseek(stdin, 0, SEEK_END);
-          if (input[0] == '*') {
-            free(input);
+      printf("[J] PHONE BOOK. Search # of contact.\n");
+      printf("Type SEARCH QUERY and press Enter: ");
+      fgets(query, FILED_SIZE, stdin);
+      sscanf(query, "%s", query);
+      for (int i = 0; i < phonebook_data_size; i++) {
+        if (phonebook_data[i].property & 0b00000001) {
+          if (!strcmp(query, phonebook_data[i].name) || !strcmp(query, phonebook_data[i].surname) || !strcmp(query, phonebook_data[i].phone)) {
+            printf("Contact found at #%d %s %s. Phone: %s.\n", i, phonebook_data[i].name, phonebook_data[i].surname, phonebook_data[i].phone);
+            Pause();
             return;
           }
-          strcpy(phonebook_data[id].name, input);
-          printf("Field of contact succefull changed: %s. %s. %s.\n", phonebook_data[id].name, phonebook_data[id].surname, phonebook_data[id].phone);
-          printf("Press Enter for back to menu.");
-          scanf("%c", &trash);
-          fseek(stdin, 0, SEEK_END);
-          free(input);
-          return;
-        } else if (opt == 2) {
-          printf("Type new value instead <%s>: ", phonebook_data[id].surname);
-          scanf("%s", input);
-          fseek(stdin, 0, SEEK_END);
-          if (input[0] == '*') {
-            free(input);
-            return;
-          }
-          strcpy(phonebook_data[id].surname, input);
-          printf("Field of contact succefull changed: %s. %s. %s.\n", phonebook_data[id].name, phonebook_data[id].surname, phonebook_data[id].phone);
-          printf("Press Enter for back to menu.");
-          scanf("%c", &trash);
-          fseek(stdin, 0, SEEK_END);
-          free(input);
-          return;
-        } else if (opt == 3) {
-          printf("Type new value instead <%s>: ", phonebook_data[id].phone);
-          scanf("%s", input);
-          fseek(stdin, 0, SEEK_END);
-          if (input[0] == '*') {
-            free(input);
-            return;
-          }
-          strcpy(phonebook_data[id].phone, input);
-          printf("Field of contact succefull changed: %s. %s. %s.\n", phonebook_data[id].name, phonebook_data[id].surname, phonebook_data[id].phone);
-          printf("Press Enter for back to menu.");
-          scanf("%c", &trash);
-          fseek(stdin, 0, SEEK_END);
-          free(input);
-          return;
         }
       }
-      printf("⚠️ Incorrect ID or contact slot is empty. Use value from 0 to %d.\n", (size - 1));
-      printf("Press Enter to continue.");
-      scanf("%c", &trash);
-      fseek(stdin, 0, SEEK_END);
-      free(input);
+      printf("Not found by query: %s\n", query);
+      Pause();
+      return;
+    } else if (action == 3) {
+      if (phonebook_data_size == space) {
+        return;
+      }
+      char id_[10];
+      size_t id;
+      char key;
+      char field[FILED_SIZE];
+      system("clear");
+      printf("[J] PHONE BOOK. Contact edit.\n");
+      printf("Type # of contact for edit and press Enter: ");
+      fgets(id_, 10, stdin);
+      sscanf(id_, "%zu", &id);
+      if (id >= phonebook_data_size) {
+        printf("Edit operation canceled. Incorrect #.\n");
+        Pause();
+        return;
+      }
+      if ((id < phonebook_data_size) && ((phonebook_data[id].property & 0b00000001))) {
+        printf("Type key of filed <1> NAME, <2> SURNAME, <3> PHONE and press Enter: ");
+        key = Getchar();
+        printf("Type NEW VALUE and press Enter: ");
+        fgets(field, FILED_SIZE, stdin);
+        sscanf(field, "%s", field);
+        switch (key) {
+          case '1':
+            strcpy((phonebook_data + id)->name, field);
+            break;
+          case '2':
+            strcpy((phonebook_data + id)->surname, field);
+            break;
+          case '3':
+            strcpy((phonebook_data + id)->phone, field);
+            break;
+          }
+        Pause();
+      }
       return;
     } else if (action == 4) {
-      int id;
+      char id_[10];
+      size_t id;
       char opt;
       system("clear");
-      printf("📕 PHONE BOOK. Remove the contact.\n");
-      printf("Type ID of contact for edit and press Enter: ");
-      scanf("%d", &id);
-      fseek(stdin, 0, SEEK_END);
-      if ((-1 < id) && (id < size) && ((phonebook_data[id].property & 0b00000001))) {
-        printf("Are you really wanna to remove the contact: %s. %s. %s?\n", phonebook_data[id].name, phonebook_data[id].surname, phonebook_data[id].phone);
-        printf("Type y for remove or any char for cancel: ");
-        scanf("%c", &opt);
-        fseek(stdin, 0, SEEK_END);
+      printf("|J| PHONE BOOK. Remove the contact.\n");
+      printf("Type # of contact for edit and press Enter: ");
+      fgets(id_, 10, stdin);
+      sscanf(id_, "%zu", &id);
+      if ((id < phonebook_data_size) && ((phonebook_data[id].property & 0b00000001))) {
+        printf("Type <y> for remove or any char for cancel: ");
+        opt = Getchar();
         if (opt == 'y') {
           phonebook_data[id].property = 0b00000000 & 0b00000001;
           printf("Contact succefull removed.\n");
         } else {
           printf("Remove operation canceled.\n");
         }
+      } else {
+        printf("Remove operation canceled. Incorrect #.\n");
       }
-      printf("Press Enter for back to menu.");
-      scanf("%c", &trash);
-      fseek(stdin, 0, SEEK_END);
+      Pause();
       return;
     } else if (action == 5) {
       system("clear");
-      printf("📕 PHONE BOOK. Watch all.\n");
+      printf("|J| PHONE BOOK. Watch all.\n");
       printf("#\tName\tSurname\tPhone\n");
-      for (int i = 0; i < size; i++) {
+      for (size_t i = 0; i < phonebook_data_size; i++) {
         if (phonebook_data[i].property & 0b00000001) {
-          printf("%d\t%s\t%s\t%s\n", i, phonebook_data[i].name, phonebook_data[i].surname, phonebook_data[i].phone);
+          printf("%zu\t%s\t%s\t%s\n", i, phonebook_data[i].name, phonebook_data[i].surname, phonebook_data[i].phone);
         }
       }
-      printf("Press Enter for back to menu.");
-      scanf("%c", &trash);
-      fseek(stdin, 0, SEEK_END);
+      Pause();
+      return;
+    } else if (action == 6) {
+      char names[5][FILED_SIZE] = {"Olivia", "Hana", "Kevin", "Nicole", "Dave"};
+      char surnames[5][FILED_SIZE] = {"Johnson", "Kim", "Jones", "Taylor", "Wilson"};
+      char phones[5][FILED_SIZE] = {"+1-(205)-(111)-(1111)", "+1-(907)-(222)-(2222)", "+1-(479)-(333)-(333)", "+1-(303)-(444)-(4444)", "+1-(239)-(555)-(5555)"};
+      for (size_t i = 0; i < 5; i++) {
+        strcpy(phonebook_data[phonebook_data_size - space + i].name, names[i]);
+        strcpy(phonebook_data[phonebook_data_size - space + i].surname, surnames[i]);
+        strcpy(phonebook_data[phonebook_data_size - space + i].phone, phones[i]);
+        phonebook_data[phonebook_data_size - space + i].property |= 0b00000001;
+      }
       return;
     }
 
     while (1) {
       system("clear");
-      printf("📕 HELLO! I'AM PHONE BOOK [%d/%d]:\n", (size - space), size);
+      printf("|J| HELLO! I'AM PHONE BOOK [%zu/%zu]:\n", (phonebook_data_size - space), phonebook_data_size);
       printf("1 - Add new contact;\n");
       printf("2 - Search;\n");
       printf("3 - Edit;\n");
       printf("4 - Remove.\n");
       printf("5 - Watch all.\n");
-      printf("0 - Quit.\n");
+      printf("6 - Demo (autofill).\n");
+      printf("Q - Quit.\n");
       printf("Please, type menu key and press Enter: ");
-      scanf("%d", &key);
-      fseek(stdin, 0, SEEK_END); // fix: scanf + while
+      key = Getchar();
       switch (key) {
-        case 1:
+        case '1':
           phonebook(1);
-          key = -1;
+          key = 0;
           break;
-        case 2:
+        case '2':
           phonebook(2);
-          key = -1;
+          key = 0;
           break;
-        case 3:
+        case '3':
           phonebook(3);
-          key = -1;
+          key = 0;
           break;
-        case 4:
+        case '4':
           phonebook(4);
-          key = -1;
+          key = 0;
           break;
-        case 5:
+        case '5':
           phonebook(5);
-          key = -1;
+          key = 0;
           break;
-        case 0:
+        case '6':
+          phonebook(6);
+          key = 0;
+          break;
+        case 'q':
+          return;
+        case 'Q':
           return;
       }
-      if (key == -1) {
+      if (key == 0) {
         break;
       }
     }
