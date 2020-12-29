@@ -158,7 +158,7 @@ void phonebook(unsigned char action) {
         printf("Type <y> for remove or any char for cancel: ");
         opt = Getchar();
         if (opt == 'y') {
-          phonebook_data[id].property = 0b00000000 & 0b00000001;
+          phonebook_data[id].property &= ~0b00000001;
           printf("Contact succefull removed.\n");
         } else {
           printf("Remove operation canceled.\n");
