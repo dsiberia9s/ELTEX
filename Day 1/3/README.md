@@ -1,4 +1,4 @@
-![](https://raw.githubusercontent.com/dsiberia9s/ELTEX_School/main/Day%101/3/screenshot.png)
+![](https://raw.githubusercontent.com/dsiberia9s/ELTEX_School/tree/main/Day%101/3/screenshot.png)
 
 **[по-русски]**
 
