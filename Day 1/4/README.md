@@ -6,4 +6,4 @@
 
 **[English]**
 
-Filling the matrix numbers 1 to N ^ 2 like as "snail".
+Filling the matrix numbers 1 to N^2 like as "snail".
