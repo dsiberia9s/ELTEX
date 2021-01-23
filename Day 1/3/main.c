@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <math.h> 
+#include <math.h>
 
 void invert() {
   int m[] = {0, 0, 1, 0, 1, 1, 1, 1, 1};
