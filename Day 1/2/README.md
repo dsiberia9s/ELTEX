@@ -2,8 +2,8 @@
 
 **[по-русски]**
 
-Заполнение массива целыми числами. Вывод в порядке возрастания и убывания.
+Заполнение массива размером N целыми числами. Вывод в порядке возрастания и убывания.
 
 **[English]**
 
-Filling array of integer digits. Printing on the screen increasing and decreasing sequence.
+Filling array of N-size integer digits. Printing on the screen increasing and decreasing sequence.

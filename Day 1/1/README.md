@@ -2,8 +2,8 @@
 
 **[по-русски]**
 
-Вывод квадратной матрицы на экран.
+Вывод квадратной матрицы размером N на экран.
 
 **[English]**
 
-Printing a square matrix on the screen.
+Printing a square matrix of N-size on the screen.
