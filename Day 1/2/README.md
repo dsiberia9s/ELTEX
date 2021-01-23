@@ -1,0 +1,9 @@
+![](https://raw.githubusercontent.com/dsiberia9s/ELTEX_School/main/Day%201/2/screenshot.png)
+
+**[по-русски]**
+
+Заполнение массива целыми числами. Вывод в порядке возрастания и убывания.
+
+**[English]**
+
+Filling array of integer digits. Printing on the screen increasing and decreasing sequence.

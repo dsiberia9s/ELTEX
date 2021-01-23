@@ -6,4 +6,4 @@
 
 **[English]**
 
-Displaying a square matrix on the screen.
+Printing a square matrix on the screen.
