@@ -4,10 +4,38 @@
 
 Калькулятор. Каждая функция вынесена в отдельный объектный модуль статической библиотеки.
 
+Создание объектных модулей:
+
+`gcc sum.c sub.c mul.c div.c -c`
+
+Создание статической библиотеки:
+
+`ar rc libcalc.a sum.c sub.c mul.c div.c`
+
+Компиляция:
+
+`gcc calc.c -o calc -L. -lcalc`
+
+Запуск бинарного файла:
+
+`./calc`
+
 **[English]**
 
-Calculator. Each function is moved to a separate object modules of the static library.
+Calculator. Each function is moved to a separate object modules of the dynamic library.
 
-`gcc sum.c -c`
-`ar rc libcalc.a sum.o sub.o mul.o div.o`
-`gcc main.c -o calc -L. -lcalc`
+Create object-modules:
+
+`gcc sum.c sub.c mul.c div.c -c`
+
+Create static library:
+
+`ar rc libcalc.a sum.c sub.c mul.c div.c`
+
+Compile:
+
+`gcc calc.c -o calc -L. -lcalc`
+
+Run binary:
+
+`./calc`
